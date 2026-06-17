@@ -1,0 +1,734 @@
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('CONTAIN') and o.name = 'FK_CONTAIN_BELONGS_T_CATEGORY')
+alter table CONTAIN
+   drop constraint FK_CONTAIN_BELONGS_T_CATEGORY
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('CONTAIN') and o.name = 'FK_CONTAIN_CONTAINS_COURSE')
+alter table CONTAIN
+   drop constraint FK_CONTAIN_CONTAINS_COURSE
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('COURSE') and o.name = 'FK_COURSE_ADDS_INSTRUCT')
+alter table COURSE
+   drop constraint FK_COURSE_ADDS_INSTRUCT
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('EXAM') and o.name = 'FK_EXAM_INCLUDES_COURSE')
+alter table EXAM
+   drop constraint FK_EXAM_INCLUDES_COURSE
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('INSTRUCTOR') and o.name = 'FK_INSTRUCT_IS_A_USER')
+alter table INSTRUCTOR
+   drop constraint FK_INSTRUCT_IS_A_USER
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('IS_EXPERT_IN') and o.name = 'FK_IS_EXPER_IS_EXPERT_EXPERTIS')
+alter table IS_EXPERT_IN
+   drop constraint FK_IS_EXPER_IS_EXPERT_EXPERTIS
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('IS_EXPERT_IN') and o.name = 'FK_IS_EXPER_IS_EXPERT_INSTRUCT')
+alter table IS_EXPERT_IN
+   drop constraint FK_IS_EXPER_IS_EXPERT_INSTRUCT
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('MESSAGE') and o.name = 'FK_MESSAGE_CONSISTS__CHAT')
+alter table MESSAGE
+   drop constraint FK_MESSAGE_CONSISTS__CHAT
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('PARTICIPATES_IN') and o.name = 'FK_PARTICIP_PARTICIPA_USER')
+alter table PARTICIPATES_IN
+   drop constraint FK_PARTICIP_PARTICIPA_USER
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('PARTICIPATES_IN') and o.name = 'FK_PARTICIP_PARTICIPA_CHAT')
+alter table PARTICIPATES_IN
+   drop constraint FK_PARTICIP_PARTICIPA_CHAT
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('REGISTERS') and o.name = 'FK_REGISTER_BELONG_TO_COURSE')
+alter table REGISTERS
+   drop constraint FK_REGISTER_BELONG_TO_COURSE
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('REGISTERS') and o.name = 'FK_REGISTER_MAKES_A_STUDENT')
+alter table REGISTERS
+   drop constraint FK_REGISTER_MAKES_A_STUDENT
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('REGISTERS') and o.name = 'FK_REGISTER_OCCUERS_I_SEMESTER')
+alter table REGISTERS
+   drop constraint FK_REGISTER_OCCUERS_I_SEMESTER
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('STUDENT') and o.name = 'FK_STUDENT_IS_A2_USER')
+alter table STUDENT
+   drop constraint FK_STUDENT_IS_A2_USER
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('TAKES') and o.name = 'FK_TAKES_ATTEMPTS_STUDENT')
+alter table TAKES
+   drop constraint FK_TAKES_ATTEMPTS_STUDENT
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('TAKES') and o.name = 'FK_TAKES_BELONGS_T_EXAM')
+alter table TAKES
+   drop constraint FK_TAKES_BELONGS_T_EXAM
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('CATEGORY')
+            and   type = 'U')
+   drop table CATEGORY
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('CHAT')
+            and   type = 'U')
+   drop table CHAT
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('CONTAIN')
+            and   name  = 'BELONGS_TO_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index CONTAIN.BELONGS_TO_FK
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('CONTAIN')
+            and   name  = 'CONTAINS_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index CONTAIN.CONTAINS_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('CONTAIN')
+            and   type = 'U')
+   drop table CONTAIN
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('COURSE')
+            and   name  = 'ADDS_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index COURSE.ADDS_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('COURSE')
+            and   type = 'U')
+   drop table COURSE
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('EXAM')
+            and   name  = 'INCLUDES_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index EXAM.INCLUDES_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('EXAM')
+            and   type = 'U')
+   drop table EXAM
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('EXPERTISE_AREA')
+            and   type = 'U')
+   drop table EXPERTISE_AREA
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('INSTRUCTOR')
+            and   type = 'U')
+   drop table INSTRUCTOR
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('IS_EXPERT_IN')
+            and   name  = 'IS_EXPERT_IN2_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index IS_EXPERT_IN.IS_EXPERT_IN2_FK
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('IS_EXPERT_IN')
+            and   name  = 'IS_EXPERT_IN_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index IS_EXPERT_IN.IS_EXPERT_IN_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('IS_EXPERT_IN')
+            and   type = 'U')
+   drop table IS_EXPERT_IN
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('MESSAGE')
+            and   name  = 'CONSISTS_OF_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index MESSAGE.CONSISTS_OF_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('MESSAGE')
+            and   type = 'U')
+   drop table MESSAGE
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('PARTICIPATES_IN')
+            and   name  = 'PARTICIPATES_IN2_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index PARTICIPATES_IN.PARTICIPATES_IN2_FK
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('PARTICIPATES_IN')
+            and   name  = 'PARTICIPATES_IN_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index PARTICIPATES_IN.PARTICIPATES_IN_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('PARTICIPATES_IN')
+            and   type = 'U')
+   drop table PARTICIPATES_IN
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('REGISTERS')
+            and   name  = 'OCCUERS_IN_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index REGISTERS.OCCUERS_IN_FK
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('REGISTERS')
+            and   name  = 'MAKES_A_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index REGISTERS.MAKES_A_FK
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('REGISTERS')
+            and   name  = 'BELONG_TO_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index REGISTERS.BELONG_TO_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('REGISTERS')
+            and   type = 'U')
+   drop table REGISTERS
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('SEMESTER')
+            and   type = 'U')
+   drop table SEMESTER
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('STUDENT')
+            and   type = 'U')
+   drop table STUDENT
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('TAKES')
+            and   name  = 'BELONGS_TO2_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index TAKES.BELONGS_TO2_FK
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('TAKES')
+            and   name  = 'ATTEMPTS_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index TAKES.ATTEMPTS_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('TAKES')
+            and   type = 'U')
+   drop table TAKES
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('"USER"')
+            and   type = 'U')
+   drop table "USER"
+go
+
+/*==============================================================*/
+/* Table: CATEGORY                                              */
+/*==============================================================*/
+create table CATEGORY (
+   CATEGORY_ID          int                  identity,
+   NAME                 varchar(50)          not null,
+   constraint PK_CATEGORY primary key (CATEGORY_ID)
+)
+go
+
+/*==============================================================*/
+/* Table: CHAT                                                  */
+/*==============================================================*/
+create table CHAT (
+   CHAT_ID              int                  identity,
+   CREATION_DATE        datetime             not null,
+   constraint PK_CHAT primary key (CHAT_ID)
+)
+go
+
+/*==============================================================*/
+/* Table: CONTAIN                                               */
+/*==============================================================*/
+create table CONTAIN (
+   COURSE_ID            int                  not null,
+   CATEGORY_ID          int                  not null,
+   constraint PK_CONTAIN primary key (COURSE_ID, CATEGORY_ID)
+)
+go
+
+/*==============================================================*/
+/* Index: CONTAINS_FK                                           */
+/*==============================================================*/
+
+
+
+
+create nonclustered index CONTAINS_FK on CONTAIN (COURSE_ID ASC)
+go
+
+/*==============================================================*/
+/* Index: BELONGS_TO_FK                                         */
+/*==============================================================*/
+
+
+
+
+create nonclustered index BELONGS_TO_FK on CONTAIN (CATEGORY_ID ASC)
+go
+
+/*==============================================================*/
+/* Table: COURSE                                                */
+/*==============================================================*/
+create table COURSE (
+   COURSE_ID            int                  identity,
+   USER_ID              int                  not null,
+   NAME                 varchar(50)          not null,
+   DURATION             int                  not null,
+   VISIBILITY           bit                  not null,
+   constraint PK_COURSE primary key (COURSE_ID)
+)
+go
+
+/*==============================================================*/
+/* Index: ADDS_FK                                               */
+/*==============================================================*/
+
+
+
+
+create nonclustered index ADDS_FK on COURSE (USER_ID ASC)
+go
+
+/*==============================================================*/
+/* Table: EXAM                                                  */
+/*==============================================================*/
+create table EXAM (
+   EXAM_ID              int                  identity,
+   COURSE_ID            int                  not null,
+   EXAM_DURATION        datetime             not null,
+   EXAM_TYPE            varchar(10)          not null,
+   constraint PK_EXAM primary key (EXAM_ID)
+)
+go
+
+/*==============================================================*/
+/* Index: INCLUDES_FK                                           */
+/*==============================================================*/
+
+
+
+
+create nonclustered index INCLUDES_FK on EXAM (COURSE_ID ASC)
+go
+
+/*==============================================================*/
+/* Table: EXPERTISE_AREA                                        */
+/*==============================================================*/
+create table EXPERTISE_AREA (
+   AREA_ID              int                  identity,
+   AREA_NAME            varchar(50)          not null,
+   constraint PK_EXPERTISE_AREA primary key (AREA_ID)
+)
+go
+
+/*==============================================================*/
+/* Table: INSTRUCTOR                                            */
+/*==============================================================*/
+create table INSTRUCTOR (
+   USER_ID              int                  not null,
+   USER_FNAME           varchar(20)          not null,
+   USER_LNAME           varchar(20)          not null,
+   USER_EMAIL           varchar(40)          not null,
+   OFFICE_HOURS         datetime             null,
+   constraint PK_INSTRUCTOR primary key (USER_ID)
+)
+go
+
+/*==============================================================*/
+/* Table: IS_EXPERT_IN                                          */
+/*==============================================================*/
+create table IS_EXPERT_IN (
+   AREA_ID              int                  not null,
+   USER_ID              int                  not null,
+   constraint PK_IS_EXPERT_IN primary key (AREA_ID, USER_ID)
+)
+go
+
+/*==============================================================*/
+/* Index: IS_EXPERT_IN_FK                                       */
+/*==============================================================*/
+
+
+
+
+create nonclustered index IS_EXPERT_IN_FK on IS_EXPERT_IN (AREA_ID ASC)
+go
+
+/*==============================================================*/
+/* Index: IS_EXPERT_IN2_FK                                      */
+/*==============================================================*/
+
+
+
+
+create nonclustered index IS_EXPERT_IN2_FK on IS_EXPERT_IN (USER_ID ASC)
+go
+
+/*==============================================================*/
+/* Table: MESSAGE                                               */
+/*==============================================================*/
+create table MESSAGE (
+   MESSAGE_ID           int                  identity,
+   CHAT_ID              int                  not null,
+   CONTENT              varchar(1000)        not null,
+   TIME                 datetime             not null,
+   TYPE                 varchar(50)          not null,
+   constraint PK_MESSAGE primary key (MESSAGE_ID)
+)
+go
+
+/*==============================================================*/
+/* Index: CONSISTS_OF_FK                                        */
+/*==============================================================*/
+
+
+
+
+create nonclustered index CONSISTS_OF_FK on MESSAGE (CHAT_ID ASC)
+go
+
+/*==============================================================*/
+/* Table: PARTICIPATES_IN                                       */
+/*==============================================================*/
+create table PARTICIPATES_IN (
+   USER_ID              int                  not null,
+   CHAT_ID              int                  not null,
+   constraint PK_PARTICIPATES_IN primary key (USER_ID, CHAT_ID)
+)
+go
+
+/*==============================================================*/
+/* Index: PARTICIPATES_IN_FK                                    */
+/*==============================================================*/
+
+
+
+
+create nonclustered index PARTICIPATES_IN_FK on PARTICIPATES_IN (USER_ID ASC)
+go
+
+/*==============================================================*/
+/* Index: PARTICIPATES_IN2_FK                                   */
+/*==============================================================*/
+
+
+
+
+create nonclustered index PARTICIPATES_IN2_FK on PARTICIPATES_IN (CHAT_ID ASC)
+go
+
+/*==============================================================*/
+/* Table: REGISTERS                                             */
+/*==============================================================*/
+create table REGISTERS (
+   FINAL_GRADE          int                  not null,
+   COURSE_ID            int                  not null,
+   SEMESTER_ID          int                  not null,
+   USER_ID              int                  not null,
+   constraint PK_REGISTERS primary key (COURSE_ID, SEMESTER_ID, USER_ID)
+)
+go
+
+/*==============================================================*/
+/* Index: BELONG_TO_FK                                          */
+/*==============================================================*/
+
+
+
+
+create nonclustered index BELONG_TO_FK on REGISTERS (COURSE_ID ASC)
+go
+
+/*==============================================================*/
+/* Index: MAKES_A_FK                                            */
+/*==============================================================*/
+
+
+
+
+create nonclustered index MAKES_A_FK on REGISTERS (USER_ID ASC)
+go
+
+/*==============================================================*/
+/* Index: OCCUERS_IN_FK                                         */
+/*==============================================================*/
+
+
+
+
+create nonclustered index OCCUERS_IN_FK on REGISTERS (SEMESTER_ID ASC)
+go
+
+/*==============================================================*/
+/* Table: SEMESTER                                              */
+/*==============================================================*/
+create table SEMESTER (
+   SEMESTER_ID          int                  identity,
+   START_DATE           datetime             not null,
+   END_DATE             datetime             not null,
+   IS_CURRENT           bit                  not null,
+   constraint PK_SEMESTER primary key (SEMESTER_ID)
+)
+go
+
+/*==============================================================*/
+/* Table: STUDENT                                               */
+/*==============================================================*/
+create table STUDENT (
+   USER_ID              int                  not null,
+   USER_FNAME           varchar(20)          not null,
+   USER_LNAME           varchar(20)          not null,
+   USER_EMAIL           varchar(40)          not null,
+   ENROLLMENT_YEAR      int                  not null,
+   constraint PK_STUDENT primary key (USER_ID)
+)
+go
+
+/*==============================================================*/
+/* Table: TAKES                                                 */
+/*==============================================================*/
+create table TAKES (
+   USER_ID              int                  not null,
+   EXAM_ID              int                  not null,
+   GRADE                float                null,
+   DATE                 datetime             not null,
+   constraint PK_TAKES primary key (USER_ID, EXAM_ID)
+)
+go
+
+/*==============================================================*/
+/* Index: ATTEMPTS_FK                                           */
+/*==============================================================*/
+
+
+
+
+create nonclustered index ATTEMPTS_FK on TAKES (USER_ID ASC)
+go
+
+/*==============================================================*/
+/* Index: BELONGS_TO2_FK                                        */
+/*==============================================================*/
+
+
+
+
+create nonclustered index BELONGS_TO2_FK on TAKES (EXAM_ID ASC)
+go
+
+/*==============================================================*/
+/* Table: "USER"                                                */
+/*==============================================================*/
+create table "USER" (
+   USER_ID              int                  identity,
+   USER_FNAME           varchar(20)          not null,
+   USER_LNAME           varchar(20)          not null,
+   USER_EMAIL           varchar(40)          not null,
+   constraint PK_USER primary key (USER_ID)
+)
+go
+
+alter table CONTAIN
+   add constraint FK_CONTAIN_BELONGS_T_CATEGORY foreign key (CATEGORY_ID)
+      references CATEGORY (CATEGORY_ID)
+go
+
+alter table CONTAIN
+   add constraint FK_CONTAIN_CONTAINS_COURSE foreign key (COURSE_ID)
+      references COURSE (COURSE_ID)
+go
+
+alter table COURSE
+   add constraint FK_COURSE_ADDS_INSTRUCT foreign key (USER_ID)
+      references INSTRUCTOR (USER_ID)
+go
+
+alter table EXAM
+   add constraint FK_EXAM_INCLUDES_COURSE foreign key (COURSE_ID)
+      references COURSE (COURSE_ID)
+go
+
+alter table INSTRUCTOR
+   add constraint FK_INSTRUCT_IS_A_USER foreign key (USER_ID)
+      references "USER" (USER_ID)
+go
+
+alter table IS_EXPERT_IN
+   add constraint FK_IS_EXPER_IS_EXPERT_EXPERTIS foreign key (AREA_ID)
+      references EXPERTISE_AREA (AREA_ID)
+go
+
+alter table IS_EXPERT_IN
+   add constraint FK_IS_EXPER_IS_EXPERT_INSTRUCT foreign key (USER_ID)
+      references INSTRUCTOR (USER_ID)
+go
+
+alter table MESSAGE
+   add constraint FK_MESSAGE_CONSISTS__CHAT foreign key (CHAT_ID)
+      references CHAT (CHAT_ID)
+go
+
+alter table PARTICIPATES_IN
+   add constraint FK_PARTICIP_PARTICIPA_USER foreign key (USER_ID)
+      references "USER" (USER_ID)
+go
+
+alter table PARTICIPATES_IN
+   add constraint FK_PARTICIP_PARTICIPA_CHAT foreign key (CHAT_ID)
+      references CHAT (CHAT_ID)
+go
+
+alter table REGISTERS
+   add constraint FK_REGISTER_BELONG_TO_COURSE foreign key (COURSE_ID)
+      references COURSE (COURSE_ID)
+go
+
+alter table REGISTERS
+   add constraint FK_REGISTER_MAKES_A_STUDENT foreign key (USER_ID)
+      references STUDENT (USER_ID)
+go
+
+alter table REGISTERS
+   add constraint FK_REGISTER_OCCUERS_I_SEMESTER foreign key (SEMESTER_ID)
+      references SEMESTER (SEMESTER_ID)
+go
+
+alter table STUDENT
+   add constraint FK_STUDENT_IS_A2_USER foreign key (USER_ID)
+      references "USER" (USER_ID)
+go
+
+alter table TAKES
+   add constraint FK_TAKES_ATTEMPTS_STUDENT foreign key (USER_ID)
+      references STUDENT (USER_ID)
+go
+
+alter table TAKES
+   add constraint FK_TAKES_BELONGS_T_EXAM foreign key (EXAM_ID)
+      references EXAM (EXAM_ID)
+go
